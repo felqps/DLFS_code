@@ -110,7 +110,7 @@ class Trainer(object):
 
     def generate_batches(
         self, X: np.ndarray, y: np.ndarray, size: int = 32
-    ) -> typing.Generator[typing.Tuple[np.ndarray]]:
+    ) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
 
         assert (
             X.shape[0] == y.shape[0]
