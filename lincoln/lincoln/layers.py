@@ -80,7 +80,6 @@ class Dense(Layer):
         super().__init__(neurons)
         self.activation = activation
         self.conv_in = conv_in
-        self.dropout = dropout
         self.weight_init = weight_init
 
     def _setup_layer(self, input_: np.ndarray) -> None:
