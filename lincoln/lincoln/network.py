@@ -11,11 +11,11 @@ class LayerBlock(object):
         super().__init__()
         self.layers = layers
 
-    def forward(self, X_batch: np.ndarray) -> np.ndarray:
+    def forward(self, X_batch: np.ndarray, inference: bool = False) -> np.ndarray:
 
         X_out = X_batch
         for layer in self.layers:
-            X_out = layer.forward(X_out)
+            X_out = layer.forward(X_out, inference)
 
         return X_out
 
@@ -61,9 +61,11 @@ class NeuralNetwork(LayerBlock):
             for layer in self.layers:
                 setattr(layer, "seed", self.seed)
 
-    def forward_loss(self, X_batch: np.ndarray, y_batch: np.ndarray) -> float:
+    def forward_loss(
+        self, X_batch: np.ndarray, y_batch: np.ndarray, inference: bool = False
+    ) -> float:
 
-        prediction = self.forward(X_batch)
+        prediction = self.forward(X_batch, inference)
         return self.loss.forward(prediction, y_batch)
 
     def train_batch(self, X_batch: np.ndarray, y_batch: np.ndarray) -> float:

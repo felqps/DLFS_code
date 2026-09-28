@@ -8,9 +8,10 @@ class Operation(object):
     def __init__(self):
         pass
 
-    def forward(self, input_: np.ndarray) -> np.ndarray:
+    def forward(self, input_: np.ndarray, inference: bool = False) -> np.ndarray:
 
         self.input_ = input_
+        self.inference = inference
 
         self.output = self._output()
 
