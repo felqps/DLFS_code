@@ -6,6 +6,7 @@ from lincoln import activations
 from lincoln import base
 from lincoln import conv
 from lincoln import dense
+from lincoln import dropout
 from lincoln import reshape
 from lincoln.utils import np_utils
 
@@ -22,7 +23,7 @@ class Layer(object):
     def _setup_layer(self, input_: np.ndarray) -> None:
         pass
 
-    def forward(self, input_: np.ndarray) -> np.ndarray:
+    def forward(self, input_: np.ndarray, inference: bool = False) -> np.ndarray:
 
         if self.first:
             self._setup_layer(input_)
@@ -32,7 +33,7 @@ class Layer(object):
 
         for operation in self.operations:
 
-            input_ = operation.forward(input_)
+            input_ = operation.forward(input_, inference)
 
         self.output = input_
 
@@ -80,7 +81,6 @@ class Dense(Layer):
         super().__init__(neurons)
         self.activation = activation
         self.conv_in = conv_in
-        self.dropout = dropout
         self.weight_init = weight_init
 
     def _setup_layer(self, input_: np.ndarray) -> None:

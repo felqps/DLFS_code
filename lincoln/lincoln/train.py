@@ -62,7 +62,7 @@ class Trainer(object):
 
                 if conv_testing:
                     if ii % 10 == 0:
-                        test_preds = self.net.forward(X_batch)
+                        test_preds = self.net.forward(X_batch, inference=True)
                         batch_loss = self.net.loss.forward(test_preds, y_batch)
                         print("batch", ii, "loss", batch_loss)
 
@@ -73,7 +73,7 @@ class Trainer(object):
                             "batches is",
                             """{0:.2f}%""".format(
                                 np.equal(
-                                    np.argmax(self.net.forward(X_test), axis=1),
+                                    np.argmax(self.net.forward(X_test, inference=True), axis=1),
                                     np.argmax(y_test, axis=1),
                                 ).sum()
                                 * 100.0
@@ -83,7 +83,7 @@ class Trainer(object):
 
             if (e + 1) % eval_every == 0:
 
-                test_preds = self.net.forward(X_test)
+                test_preds = self.net.forward(X_test, inference=True)
                 loss = self.net.loss.forward(test_preds, y_test)
 
                 if early_stopping:
@@ -110,7 +110,7 @@ class Trainer(object):
 
     def generate_batches(
         self, X: np.ndarray, y: np.ndarray, size: int = 32
-    ) -> typing.Generator[typing.Tuple[np.ndarray]]:
+    ) -> typing.Iterator[typing.Tuple[np.ndarray, np.ndarray]]:
 
         assert (
             X.shape[0] == y.shape[0]
